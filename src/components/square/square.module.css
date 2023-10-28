@@ -1,0 +1,20 @@
+.item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 3px solid salmon;
+	cursor: pointer;
+	width: 100px;
+	height: 100px;
+	transition: all 0.3s;
+}
+
+.item:hover {
+	background-color: rgb(221, 219, 219);
+}
+
+.text {
+	font-size: 40px;
+	font-weight: 900;
+	color: salmon;
+}
