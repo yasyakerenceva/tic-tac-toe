@@ -1,13 +1,19 @@
-import { isArrayAllZeros } from '../../utils';
+import { store } from '../../store/store';
+import { checkForWinner, getInformation, isArrayAllZeros } from '../../utils';
 import styles from './header.module.css';
-import PropTypes from 'prop-types';
 
-export const HeaderLayout = ({ moves, message, handleClickClearField }) => {
-	const flagAllZeros = moves.every(isArrayAllZeros);
+export const HeaderLayout = () => {
+	const flagAllZeros = store.getState().moves.every(isArrayAllZeros);
+	const handleClickClearField = () => {
+		store.dispatch({ type: 'CLEAR_MOVES', payload: Array(9).fill(0) });
+		store.dispatch({ type: 'CLEAR_MOVE_X', payload: true });
+	};
 
 	return (
 		<div className={styles.wrapper}>
-			<div className={styles.info}>{message}</div>
+			<div className={styles.info}>
+				{getInformation(checkForWinner(store.getState().moves))}
+			</div>
 			<button
 				className={`${styles.btn} ${flagAllZeros ? styles.btnDefault : ''}`}
 				onClick={handleClickClearField}
@@ -16,10 +22,4 @@ export const HeaderLayout = ({ moves, message, handleClickClearField }) => {
 			</button>
 		</div>
 	);
-};
-
-HeaderLayout.propTypes = {
-	moves: PropTypes.array,
-	message: PropTypes.string,
-	handleClickClearField: PropTypes.func,
 };
