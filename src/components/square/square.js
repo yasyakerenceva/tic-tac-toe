@@ -1,26 +1,27 @@
-import { store } from '../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { checkForWinner } from '../../utils';
 import styles from './square.module.css';
 import PropTypes from 'prop-types';
+import { selectMoves, selectMoveIsX } from '../../store/selectors';
 
 export const SquareLayout = ({ index }) => {
-	const handleClickSquare = () => {
-		if (!store.getState().moves[index] && !checkForWinner(store.getState().moves)) {
-			const [...elemMoves] = store.getState().moves;
-			store.getState().moveIsX
-				? (elemMoves[index] = 'X')
-				: (elemMoves[index] = '0');
+	const moves = useSelector(selectMoves);
+	const moveIsX = useSelector(selectMoveIsX);
+	const dispatch = useDispatch();
 
-			store.dispatch({ type: 'CHANGE_MOVE_X', payload: store.getState().moveIsX });
-			store.dispatch({ type: 'CHANGE_MOVES', payload: elemMoves });
+	const handleClickSquare = () => {
+		if (!moves[index] && !checkForWinner(moves)) {
+			const [...elemMoves] = moves;
+			moveIsX ? (elemMoves[index] = 'X') : (elemMoves[index] = '0');
+
+			dispatch({ type: 'CHANGE_MOVE_X', payload: moveIsX });
+			dispatch({ type: 'CHANGE_MOVES', payload: elemMoves });
 		}
 	};
 
 	return (
 		<div className={styles.item} onClick={handleClickSquare}>
-			<span className={styles.text}>
-				{store.getState().moves[index] ? store.getState().moves[index] : null}
-			</span>
+			<span className={styles.text}>{moves[index] ? moves[index] : null}</span>
 		</div>
 	);
 };
