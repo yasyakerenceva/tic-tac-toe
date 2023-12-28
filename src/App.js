@@ -1,45 +1,22 @@
+import { useState } from 'react';
 import styles from './App.module.css';
 import { FieldLayout, HeaderLayout } from './components';
-import { useState } from 'react';
-import { COUNT_SQUARE, checkForWinner, isArrayFilled } from './utils';
+import { store } from './store/store';
 
 export const App = () => {
-	const [moveIsX, setMoveIsX] = useState(true);
-	const [moves, setMoves] = useState(Array(COUNT_SQUARE).fill(0));
+	const [render, setRender] = useState(false);
 
-	const getInformation = (winner, message = '') => {
-		if (winner) {
-			message = `Победил игрок: ${winner}`;
-		} else if (moves.every(isArrayFilled)) {
-			message = 'Ничья';
-		} else {
-			message = `Ход игрока: ${moveIsX ? 'X' : '0'}`;
-		}
-
-		return message;
-	};
-
-	const handleClickClearField = () => {
-		setMoves(Array(9).fill(0));
-		setMoveIsX(true);
-	};
+	store.subscribe(() => {
+		setRender(!render);
+	});
 
 	return (
 		<div className={styles.game}>
 			<div className={styles.header}>
-				<HeaderLayout
-					moves={moves}
-					message={getInformation(checkForWinner(moves))}
-					handleClickClearField={handleClickClearField}
-				/>
+				<HeaderLayout />
 			</div>
 			<div className={styles.field}>
-				<FieldLayout
-					moves={moves}
-					setMoves={setMoves}
-					moveIsX={moveIsX}
-					setMoveIsX={setMoveIsX}
-				/>
+				<FieldLayout />
 			</div>
 		</div>
 	);
