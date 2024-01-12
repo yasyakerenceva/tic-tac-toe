@@ -1,31 +1,38 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { checkForWinner } from '../../utils';
-import styles from './square.module.css';
-import PropTypes from 'prop-types';
-import { selectMoves, selectMoveIsX } from '../../store/selectors';
+import { setMove } from '../../store/actionns';
+import { Component } from 'react';
 
-export const SquareLayout = ({ index }) => {
-	const moves = useSelector(selectMoves);
-	const moveIsX = useSelector(selectMoveIsX);
-	const dispatch = useDispatch();
-
-	const handleClickSquare = () => {
-		if (!moves[index] && !checkForWinner(moves)) {
-			const [...elemMoves] = moves;
-			moveIsX ? (elemMoves[index] = 'X') : (elemMoves[index] = '0');
-
-			dispatch({ type: 'CHANGE_MOVE_X', payload: moveIsX });
-			dispatch({ type: 'CHANGE_MOVES', payload: elemMoves });
+class SquareContainer extends Component {
+	handleClickSquare = () => {
+		if (!this.props.moves[this.props.index] && !checkForWinner(this.props.moves)) {
+			this.props.setMove(this.props.index);
 		}
-	};
+	}
 
-	return (
-		<div className={styles.item} onClick={handleClickSquare}>
-			<span className={styles.text}>{moves[index] ? moves[index] : null}</span>
-		</div>
-	);
-};
+	render() {
+		return (
+			<div
+				className="
+					flex justify-center items-center
+					border-[3px] border-solid border-[#FA8072]
+					w-[100px] h-[100px]
+					transition duration-[0.3s] cursor-pointer
+					hover:bg-[#DDDBDB]"
+				onClick={this.handleClickSquare}>
+				<span className="text-[40px] font-black text-[#FA8072]">
+					{this.props.moves[this.props.index] ? this.props.moves[this.props.index] : null}
+				</span>
+			</div>
+		)
+	}
+}
 
-SquareLayout.propTypes = {
-	index: PropTypes.number,
-};
+const mapStateToProps = (state) => ({
+	moves: state.moves
+});
+const mapDispatchToProps = (dispatch) => ({
+	setMove: (indexMove) => dispatch(setMove(indexMove))
+});
+
+export const SquareLayout = connect(mapStateToProps, mapDispatchToProps)(SquareContainer);

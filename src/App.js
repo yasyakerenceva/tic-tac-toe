@@ -1,19 +1,18 @@
 import { Provider } from 'react-redux';
-import styles from './App.module.css';
 import { FieldLayout, HeaderLayout } from './components';
 import { store } from './store/store';
-
-export const App = () => {
-	return (
-		<div className={styles.game}>
-			<Provider store={store}>
-				<div className={styles.header}>
+import { Component } from 'react';
+export class App extends Component {
+	render() {
+		return (
+			<div className="w-[320px] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+				<Provider store={store}>
 					<HeaderLayout />
-				</div>
-				<div className={styles.field}>
-					<FieldLayout />
-				</div>
-			</Provider>
-		</div>
-	);
-};
+	 				<div className="mt-[50px]">
+	 					<FieldLayout />
+					</div>
+				</Provider>
+			</div>
+		)
+	}
+}
