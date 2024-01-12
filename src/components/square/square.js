@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { checkForWinner } from '../../utils';
-import { setMove } from '../../store/actionns';
+import { setMove } from '../../store/actions';
 import { Component } from 'react';
 
 class SquareContainer extends Component {
