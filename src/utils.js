@@ -1,5 +1,3 @@
-import { store } from './store/store';
-
 export const COUNT_SQUARE = 9;
 
 export const isArrayFilled = (element) => {
@@ -31,13 +29,13 @@ export const checkForWinner = (moves) => {
 	return false;
 };
 
-export const getInformation = (winner, message = '') => {
+export const getInformation = (moves, moveIsX, winner, message = '') => {
 	if (winner) {
 		message = `Победил игрок: ${winner}`;
-	} else if (store.getState().moves.every(isArrayFilled)) {
+	} else if (moves.every(isArrayFilled)) {
 		message = 'Ничья';
 	} else {
-		message = `Ход игрока: ${store.getState().moveIsX ? 'X' : '0'}`;
+		message = `Ход игрока: ${moveIsX ? 'X' : '0'}`;
 	}
 	return message;
 };
